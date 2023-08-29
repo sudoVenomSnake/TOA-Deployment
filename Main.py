@@ -50,8 +50,8 @@ def get_approaches(_chain, input_situation, res_edited):
         approaches = _chain.run(res_edited).replace('<json>', '').replace('</json>', '')
     except:
         approaches = _chain.run(res_edited)
-    with open('temp.json', 'w') as file:
-        file.write(approaches)
+    # with open('temp.json', 'w') as file:
+    #     file.write(approaches)
     return approaches
 
 input_situation = st.text_input(label = 'Create a sample petition for the situation -')
@@ -197,34 +197,36 @@ if start:
     start_approaches = st.checkbox('Formulate Approaches')
 
     if start_approaches:
-        try:
-            output = get_approaches(chain, input_situation, res_edited)
-            st.json(output)
-        except:
-            st.write('Failed, retrying.')
-            st.cache_data.clear()
-            output = get_approaches(chain, input_situation, res_edited)
-            st.json(output)
-        edit_choice = st.checkbox('Do you want to edit the approaches.')
+        # try:
+        #     output = get_approaches(chain, input_situation, res_edited)
+        #     st.json(output)
+        # except:
+        #     st.write('Failed, retrying.')
+        #     st.cache_data.clear()
+        #     output = get_approaches(chain, input_situation, res_edited)
+        #     st.json(output)
+        # edit_choice = st.checkbox('Do you want to edit the approaches.')
 
-        if edit_choice:
-            edited_data = st.text_area("Paste updated JSON here", json.dumps(output, indent = 4))
-            try:
-                updated_data = json.loads(edited_data)
-                st.subheader("Updated JSON data")
-                st.json(updated_data)
-                with open('temp.json', 'w') as file:
-                    file.write(updated_data)
-                with open('temp.json', 'r') as file:
-                    json_data = json.load(file)
-                # st.json(json_data)
+        # if edit_choice:
+        #     edited_data = st.text_area("Paste updated JSON here", json.dumps(output, indent = 4))
+        #     try:
+        #         updated_data = json.loads(edited_data)
+        #         st.subheader("Updated JSON data")
+        #         st.json(updated_data)
+        #         with open('temp.json', 'w') as file:
+        #             file.write(updated_data)
+        #         with open('temp.json', 'r') as file:
+        #             json_data = json.load(file)
+        #         # st.json(json_data)
                 
-            except json.JSONDecodeError:
-                st.error("Invalid JSON format. Please enter valid JSON data.")
-        else:
-            with open('temp.json', 'r') as file:
-                json_data = json.load(file)
-            # st.json(json_data)
+        #     except json.JSONDecodeError:
+        #         st.error("Invalid JSON format. Please enter valid JSON data.")
+        # else:
+        #     with open('temp.json', 'r') as file:
+        #         json_data = json.load(file)
+        #     # st.json(json_data)
+        
+        json_data = get_approaches(chain, input_situation, res_edited)
 
         get_legal_act_solutions = st.checkbox(label = 'Get the possible legal approaches for the legal actions mentioned in the act')
         
