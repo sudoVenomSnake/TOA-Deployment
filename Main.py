@@ -228,6 +228,8 @@ if start:
         
         json_data = get_approaches(chain, input_situation, res_edited)
 
+        st.json(json_data)
+
         get_legal_act_solutions = st.checkbox(label = 'Get the possible legal approaches for the legal actions mentioned in the act')
         
         questions_a = [i['query_legal_acts'] for i in json_data['petition_tree']]
