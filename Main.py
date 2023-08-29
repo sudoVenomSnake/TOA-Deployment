@@ -47,9 +47,9 @@ def generate_petition(input_situation, example_petition):
 @st.cache_data
 def get_approaches(_chain, input_situation, res_edited):
     try:
-        approaches = _chain.run(res_edited).replace('<json>', '').replace('</json>', '')
+        approaches = _chain.run(res_edited)["raw"].replace('<json>', '').replace('</json>', '')
     except:
-        approaches = _chain.run(res_edited)
+        approaches = _chain.run(res_edited)["raw"]
     # with open('temp.json', 'w') as file:
     #     file.write(approaches)
     return approaches
