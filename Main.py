@@ -33,12 +33,12 @@ st.title('Tree of Approach')
 q_e = preprocess_prelimnary()
 
 @st.cache_data
-def generate_petition(input_situation):
+def generate_petition(input_situation, example_petition):
     response = openai.ChatCompletion.create(
             model = model,
             messages=[
                         {"role": "system", "content": "You are a helpful assistant who answers questions."},
-                        {"role": "user", "content": f"create a sample petition for the situation {input_situation}. Use Indian laws."},
+                        {"role": "user", "content": f"{example_petition}\n\n. Like the example petition above, create a sample petition for the situation {input_situation}. Use Indian laws."},
                 ]
             )
     # st.write(response['choices'][0]['message']['content'])
@@ -125,7 +125,7 @@ Copies of any relevant documentation
 # ```"""
 
 if start:
-    res = generate_petition(input_situation)
+    res = generate_petition(input_situation, example_petition)
     res_edited = st.text_area("Edit Area", res, height = 25)
     # edit_petition = st.button(label = 'If you want to edit the petition generated.')
     # if edit_petition:
