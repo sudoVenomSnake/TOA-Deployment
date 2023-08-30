@@ -274,11 +274,11 @@ if start:
                             ]
                         )
             
-            st.header('Approach Summarised -')
-            st.subheader('Query Legal Acts Summarised -')
-            st.markdown(response['choices'][0]['message']['content'])
-            formatting = ''
-            st.subheader('Query Legal Database Summarised -')
-            for n, i in enumerate(database_answers):
-                formatting += '* ' + questions_d[n] + '\n' + i + '\n'
-            st.markdown(formatting)
+            # st.header('Approach Summarised -')
+            # st.subheader('Query Legal Acts Summarised -')
+            # st.markdown(response['choices'][0]['message']['content'])
+            # formatting = ''
+            # st.subheader('Query Legal Database Summarised -')
+            # for n, i in enumerate(database_answers):
+            #     formatting += '* ' + questions_d[n] + '\n' + i + '\n'
+            # st.markdown(formatting)
