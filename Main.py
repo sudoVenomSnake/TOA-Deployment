@@ -26,7 +26,7 @@ def preprocess_prelimnary():
 
 openai.api_key = st.secrets['OPENAI_API_KEY']
 
-st.set_page_config(layout = 'wide', page_title = 'Tree of Approac')
+st.set_page_config(layout = 'wide', page_title = 'Tree of Approach')
 
 st.title('Tree of Approach')
 
