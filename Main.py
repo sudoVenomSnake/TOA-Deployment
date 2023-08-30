@@ -226,16 +226,11 @@ if start:
         #         json_data = json.load(file)
         #     # st.json(json_data)
         
-        json_data = get_approaches(chain, input_situation, res_edited)
+        json_data = json.loads(get_approaches(chain, input_situation, res_edited))
 
         st.json(json_data)
 
         get_legal_act_solutions = st.checkbox(label = 'Get the possible legal approaches for the legal actions mentioned in the act')
-        
-        st.write(type(json_data))
-
-        for i in json_data['petition_tree']:
-            print(i)
 
         questions_a = [i['query_legal_acts'] for i in json_data['petition_tree']]
         questions_d = [i['query_legal_database'] for i in json_data['petition_tree']]
