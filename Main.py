@@ -232,6 +232,9 @@ if start:
 
         get_legal_act_solutions = st.checkbox(label = 'Get the possible legal approaches for the legal actions mentioned in the act')
         
+        for i in json_data['petition_tree']:
+            print(i)
+
         questions_a = [i['query_legal_acts'] for i in json_data['petition_tree']]
         questions_d = [i['query_legal_database'] for i in json_data['petition_tree']]
 
