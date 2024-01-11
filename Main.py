@@ -1,5 +1,6 @@
 import streamlit as st
-import openai
+from openai import OpenAI
+
 from kor.extraction import create_extraction_chain
 from kor.nodes import Object, Text
 from langchain.chat_models import ChatOpenAI
@@ -15,6 +16,8 @@ from langchain.chat_models import ChatOpenAI
 from llama_index.storage.storage_context import StorageContext
 from llama_index.query_engine import CitationQueryEngine
 
+client = OpenAI(api_key=st.secrets['OPENAI_API_KEY'])
+
 @st.cache_resource
 def preprocess_prelimnary():
     storage_context = StorageContext.from_defaults(docstore = SimpleDocumentStore.from_persist_dir(persist_dir = "persist_new"),
@@ -24,7 +27,6 @@ def preprocess_prelimnary():
     query_engine = CitationQueryEngine.from_args(index, similarity_top_k = 2, citation_chunk_size = 1024)
     return query_engine
 
-openai.api_key = st.secrets['OPENAI_API_KEY']
 
 st.set_page_config(layout = 'wide', page_title = 'Tree of Approach')
 
@@ -34,13 +36,11 @@ q_e = preprocess_prelimnary()
 
 @st.cache_data
 def generate_petition(input_situation, example_petition):
-    response = openai.ChatCompletion.create(
-            model = model,
-            messages=[
-                        {"role": "system", "content": "You are a helpful assistant who answers questions."},
-                        {"role": "user", "content": f"{example_petition}\n\n. Like the example petition above, create a sample petition for the situation {input_situation}. Use Indian laws."},
-                ]
-            )
+    response = client.chat.completions.create(model = model,
+    messages=[
+                {"role": "system", "content": "You are a helpful assistant who answers questions."},
+                {"role": "user", "content": f"{example_petition}\n\n. Like the example petition above, create a sample petition for the situation {input_situation}. Use Indian laws."},
+        ])
     # st.write(response['choices'][0]['message']['content'])
     return response['choices'][0]['message']['content']
 
@@ -244,13 +244,11 @@ if start:
 
             for n, q in enumerate(questions_a):
                 st.subheader(q, "-")
-                response = openai.ChatCompletion.create(
-                        model = model,
-                        messages=[
-                                    {"role": "system", "content": "You are a helpful assistant who answers questions."},
-                                    {"role": "user", "content": f"Based on the petition - \n\"{res_edited}\"\n, a possible approach was created {q}. Give a crisp, concise and legal answer to the approach. Give detailed descriptions of the statures, and a subsequent approach to use them in our case."},
-                            ]
-                        )
+                response = client.chat.completions.create(model = model,
+                messages=[
+                            {"role": "system", "content": "You are a helpful assistant who answers questions."},
+                            {"role": "user", "content": f"Based on the petition - \n\"{res_edited}\"\n, a possible approach was created {q}. Give a crisp, concise and legal answer to the approach. Give detailed descriptions of the statures, and a subsequent approach to use them in our case."},
+                    ])
                 st.write(response['choices'][0]['message']['content'])
                 answers.append(response['choices'][0]['message']['content'])
                 st.subheader(questions_d[n], "-")
@@ -266,13 +264,11 @@ if start:
             for a in answers:
                 final_str += a + '\n'
 
-            response = openai.ChatCompletion.create(
-                        model = model,
-                        messages=[
-                                    {"role": "system", "content": "You are a helpful assistant who answers questions."},
-                                    {"role": "user", "content": f"Create a neat bullet point in markdown for the following approaches - {final_str}"},
-                            ]
-                        )
+            response = client.chat.completions.create(model = model,
+            messages=[
+                        {"role": "system", "content": "You are a helpful assistant who answers questions."},
+                        {"role": "user", "content": f"Create a neat bullet point in markdown for the following approaches - {final_str}"},
+                ])
             
             # st.header('Approach Summarised -')
             # st.subheader('Query Legal Acts Summarised -')
